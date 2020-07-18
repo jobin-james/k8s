@@ -1,2 +1,5 @@
-# k8s
-Certified Kubernetes Administrator
+## Kubernetes Certified Administrator Exam preparation.
+
+### Core Concetps..
+
+## 1. Cluster Architecture
