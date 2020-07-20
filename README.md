@@ -88,4 +88,18 @@ Below is the final form:
 - View kube-controller-manager Options - non kubeadm `cat etc/system/system/kube-ontroller-manager.service`
 - View kube-controller-manager running process to see the effective running options `ps -aux | grep kube-controller-manager`
 
+## Kube Scheduler
+- responsible for deciding which pode goes on which node. Its actually don't place the pod on node. that is the job of kubelet.
+    - Filter nodes
+    - Rank nodes
+- Scheduler config file - `cat /etc/kubernates/config/kube-scheduler.yaml`
+- View kube scheduler running process to see the effective running options `ps -aux | grep kube-scheduler`
+
+## Kubelet
+- Lead all activity in the node
+- Register nodes
+- Create POSs
+- Monitor nodes and PODs
+- `kubeadm doesnot deploy kubelet` Always manually install kubeletes.
+- View kubelet  running process to see the effective running options `ps -aux | grep kubelet`
 
