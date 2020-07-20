@@ -83,3 +83,9 @@ Below is the final form:
         - Node minitor grace period = 40 seconds
         - POD eviction timeout = 5 minutes (Time for come back online)
     - Replication controller - Resposnible for the state of replicasets and ensure desired number of pords are available all times
+- View kube-controller-manager - kubeadm  `kubectl get pods -n kube-system`
+- View kube-controller-manager Options - kubeadm `cat /etc/kubernates/manifests/kube-controller-manager.yaml`
+- View kube-controller-manager Options - non kubeadm `cat etc/system/system/kube-ontroller-manager.service`
+- View kube-controller-manager running process to see the effective running options `ps -aux | grep kube-controller-manager`
+
+
