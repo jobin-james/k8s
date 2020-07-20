@@ -62,3 +62,24 @@ Below is the final form:
 
 
     kubectl exec etcd-master -n kube-system -- sh -c "ETCDCTL_API=3 etcdctl get / --prefix --keys-only --limit=10 --cacert /etc/kubernetes/pki/etcd/ca.crt --cert /etc/kubernetes/pki/etcd/server.crt  --key /etc/kubernetes/pki/etcd/server.key" 
+    
+## Kube-api server
+- Authenticate user
+- validate requests
+- Retrive data
+- Update ETCD - kube api is the only service inteact with etcd datastore
+- Scheduler
+- Kubelet
+- View api-server - kubeadm  `kubectl get pods -n kube-system`
+- View API server Options - kubeadm `cat /etc/kubernates/manifests/kube-apiserver.yaml`
+- View API server Options - non kubeadm setup `cat /etc/system/system/kube-apiserver.service`
+- View api-server running process to see the effective running options `ps -aux | grep kube-apiserver`
+
+## Kube controller manager
+- Manages verious components in kubernates cluster 
+- controller is the process if continuiously monitoring the state and bringing the system towords the desired state.
+    - Node controller - Monitor the nodes and takes necessary actions --> through kube-api server
+        - Node monitor period = 5 seconds
+        - Node minitor grace period = 40 seconds
+        - POD eviction timeout = 5 minutes (Time for come back online)
+    - Replication controller - Resposnible for the state of replicasets and ensure desired number of pords are available all times
