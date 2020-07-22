@@ -93,3 +93,16 @@ Below is the final form:
 - `kubeadm doesnot deploy kubelet` Always manually install kubeletes.
 - View kubelet  running process to see the effective running options `ps -aux | grep kubelet`
 
+## Kube proxy
+- Is a service runs on each node in a cluster
+- Looks for new service in a node and create appropriate rule to forword triffic to backend pods if new services are created.
+- using ip tables rules
+- Deployed as deamonset -> service on each node
+
+## Pod
+- Single instance of an application
+- smallest object you can create in kubernates
+- can run multiple containers in a pod
+- get list of pods in a cluster `kubectl get pods`
+- 
+
