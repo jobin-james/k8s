@@ -106,7 +106,7 @@ Below is the final form:
 - get list of pods in a cluster `kubectl get pods`
 
 ## Kubernates yaml
-Top level metadata
+Top level properties
 ```yml
 apiVersion:
 kind:
@@ -116,9 +116,9 @@ metadata
 spec:
 ```
 
-`apiVersion` -- Depending on what we are trying to create, this will be set (String)
-`kind` -- Type of object (String)
-`metadata` -- Data about the object (Dictionary)
-`spec` -- specification for the object we are going to create.
+- `apiVersion` -- Depending on what we are trying to create, this will be set (String)
+- `kind` -- Type of object (String)
+- `metadata` -- Data about the object (Dictionary)
+- `spec` -- specification for the object we are going to create.
 
 
