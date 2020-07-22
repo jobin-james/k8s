@@ -104,5 +104,21 @@ Below is the final form:
 - smallest object you can create in kubernates
 - can run multiple containers in a pod
 - get list of pods in a cluster `kubectl get pods`
-- 
+
+## Kubernates yaml
+Top level metadata
+```yml
+apiVersion:
+kind:
+metadata
+
+
+spec:
+```
+
+`apiVersion` -- Depending on what we are trying to create, this will be set (String)
+`kind` -- Type of object (String)
+`metadata` -- Data about the object (Dictionary)
+`spec` -- specification for the object we are going to create.
+
 
