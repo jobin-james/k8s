@@ -123,6 +123,7 @@ spec:
 
 
 # Kubernates controllers
+### Replication Controller
 - controllers are the brain behind kubernates
 - Replication controller
     - replication controller ensures the container high availability
@@ -154,5 +155,40 @@ spec:
 ```
 - get the replication `kubectl get replicationcontroller`
 
-### Replicaset example
+### Replicaset
 - replicaset can also manage pods which are created without the part of replicaset
+```yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx
+  labels:
+    app: web-app
+    type: front-end
+
+spec:
+  template:
+    metadata:
+      name: my-app-pod
+      labels:
+        app: myapp
+        type: front-end
+
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx
+  replicas: 3
+  selector:
+    matchlabels:
+      type: front-end
+ ```
+ - create replicaset --> `kubectl create -f replicaset.yml`
+ - Labels and Selector
+    - filter for replicaset
+ - scale replicas
+    - Update the `replicas` in definition yml file and run `kubectl replace -f replicaset.yml`
+    or
+    - `kubectl scale --replicas=4 -f replicaser.yml` --> not recommended.
+    
+  
