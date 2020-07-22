@@ -122,3 +122,8 @@ spec:
 - `spec` -- specification for the object we are going to create.
 
 
+# Kubernates controllers
+- controllers are the brain behind kubernates
+- Replication controller
+    - replication controller ensures the container high availability
+    - ```bash Replication controller ``` is replcaed by `replica set`
