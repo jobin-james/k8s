@@ -152,3 +152,7 @@ spec:
  replicas: 3
   
 ```
+- get the replication `kubectl get replicationcontroller`
+
+### Replicaset example
+- replicaset can also manage pods which are created without the part of replicaset
