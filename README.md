@@ -126,4 +126,29 @@ spec:
 - controllers are the brain behind kubernates
 - Replication controller
     - replication controller ensures the container high availability
-    - ```bash Replication controller ``` is replcaed by `replica set`
+    - `Replication controller` is replcaed by `replica set`
+- Replication controller definition file sample
+
+```yml
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name : my-app
+  labels:
+    app: myapp
+    type: web
+spec:
+ template:
+   metadata:
+    name: my-app-pod
+    labels:
+      app: myapp
+      environament: staging
+
+  spec:
+    containers:
+      - name: nginx-container
+        image: nginx
+ replicas: 3
+  
+```
