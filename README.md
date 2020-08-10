@@ -301,3 +301,4 @@ kubectl delete -f nginx.yml
 ```
 kubectl apply -f nginx.yml
 ```
+[!Reference](https://kubernetes.io/docs/reference/kubectl/conventions/)
