@@ -241,5 +241,43 @@ spec:
         limits.cpu: "10"
         limit.memory: "10Gi"
 ```
+### Services
+- Helps connecting to another applications
+- Services enabling loose coupling between applications 
+- Object in kuberantes to listen to requests and forword
+- Labels and selectors tp map service to pods
+- Algorithm - Random, Sessionaffinity - yes
 
- 
+- Service types
+    - Nodeport --> Mapping a port on node and mapping a port on node
+    ```yml
+    apiVersion: v1
+    kind: Service
+    metadata:
+        name: myapp-service
+    spec:
+        type: NodePort
+        ports:
+            - targetPort: 80
+              port: 80
+              nodePort: 300008
+        selectors:
+            app: myapp
+            type: front-end
+    ```
+    - ClusterIP -->
+    ```yml
+    apiVersion: v1
+    kind: Service
+    metadata:
+        name: myapp-service
+    spec:
+        type: ClusterIP
+        ports:
+            - targetPort: 80
+              port: 80
+        selectors:
+            app: myapp
+            type: back-end
+    ```
+    - LoadBalancer
