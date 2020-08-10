@@ -190,5 +190,56 @@ spec:
     - Update the `replicas` in definition yml file and run `kubectl replace -f replicaset.yml`
     or
     - `kubectl scale --replicas=4 -f replicaser.yml` --> not recommended.
-    
-  
+### Namespaces
+- isolation
+- default
+- kube-system
+- kube-public
+- Resources within a namespace can refers to others with the hostname itself
+- connect another servie in another namespace `service.<namespace>.svc.cluster.local`
+- get resources from a name space `kubectl get pods --namespace=kube-system`
+- Create service in one namespace `kubectl create -f <deployment file>.yml --namespace=dev` or move the namespace in pod definition file under metadata
+eg:
+```yml
+ apiVersion: v1
+ kind: Pod
+ 
+ metadata:
+   name: myapp-dev
+   namespace: dev
+   labels:
+    app: myapp
+    type: front-end
+ spec:
+   containers:
+   - name: nginx
+     image: nginx
+```
+#### Create Namespace
+```yml
+apiversion: v1
+kind: Namespace
+metadata:
+  name: dev
+```
+or
+`kubectl create namespace dev`
+- configure context (list resources without specifying namespaces) `kubectl config set-context $(kubectl config current-context) --namespace=dev`
+- List resources in all namespaces `kubectl get pods --all-namespaces`
+- Limit resoursec in a namespace using resourcequota
+```yml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+    nameL compute-quota
+    namespace: dev
+spec:
+    hard:
+        pods: "10"
+        requests.cpu: "4"
+        requests.memory: "5Gi"
+        limits.cpu: "10"
+        limit.memory: "10Gi"
+```
+
+ 
