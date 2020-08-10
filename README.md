@@ -281,3 +281,23 @@ spec:
             type: back-end
     ```
     - LoadBalancer
+### Imperative and Declarative approaches
+- What to do and how to do --> imperative
+- Just specifing the requirements
+#### Imperative approaches
+```yml
+kubectl run --image=nginx nginx
+kubectl create deployment --image=nginx nginx
+kubectl expose deployment nginx --port 80
+kubectl edit deployment nginx
+kubectl scale deployment nginx
+kubectl scale deployment nginx --replicas=5
+kubectl set image deployment nginx nginx=nginx:1.18
+kubectl create -f nginx.yml
+kubectl replace -f nginx.yml
+kubectl delete -f nginx.yml
+```
+#### Declarative approaches
+```
+kubectl apply -f nginx.yml
+```
