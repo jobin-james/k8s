@@ -98,7 +98,7 @@ spec:
   [Reference - Memory](https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource)
   [Reference - CPU Limit](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/)
 ```yml
-      apiVersion: v1
+    apiVersion: v1
     kind: LimitRange
     metadata:
       name: mem-limit-range
@@ -125,3 +125,20 @@ spec:
 ```
   
  
+### Editing pods and deployments
+
+Remember, you CANNOT edit specifications of an existing POD other than the below.
+
+    spec.containers[*].image
+
+    spec.initContainers[*].image
+
+    spec.activeDeadlineSeconds
+
+    spec.tolerations
+    
+    
+    
+- With Deployments you can easily edit any field/property of the POD template. Since the pod template is a child of the deployment specification,  with every change the deployment will automatically delete and create a new pod with the new changes. So if you are asked to edit a property of a POD part of a deployment you may do that simply by running the command
+
+`kubectl edit deployment my-deployment`
