@@ -152,3 +152,4 @@ Remember, you CANNOT edit specifications of an existing POD other than the below
 |---|---|
 |Created by Kubelet|Created by Kube api server(Daemonset controller)|
 |Deploy control plane components as static pods|Deploy monitoring agents, logging agents on nodes|
+|Ignored by the Kube-scheduler| Ignored by the Kube-scheduler|
