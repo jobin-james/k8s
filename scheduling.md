@@ -142,3 +142,13 @@ Remember, you CANNOT edit specifications of an existing POD other than the below
 - With Deployments you can easily edit any field/property of the POD template. Since the pod template is a child of the deployment specification,  with every change the deployment will automatically delete and create a new pod with the new changes. So if you are asked to edit a property of a POD part of a deployment you may do that simply by running the command
 
 `kubectl edit deployment my-deployment`
+
+
+## DaemonSets
+- Daemon set ensures that one copy of pods runs on each node
+
+### Static pods vs DaemonSets
+|Static POD| DaemonSets|
+|---|---|
+|Created by Kubelet|Created by Kube api server(Daemonset controller)|
+|Deploy control plane components as static pods|Deploy monitoring agents, logging agents on nodes|
