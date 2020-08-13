@@ -153,3 +153,24 @@ Remember, you CANNOT edit specifications of an existing POD other than the below
 |Created by Kubelet|Created by Kube api server(Daemonset controller)|
 |Deploy control plane components as static pods|Deploy monitoring agents, logging agents on nodes|
 |Ignored by the Kube-scheduler| Ignored by the Kube-scheduler|
+
+
+### Custom scheduler
+```yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ny-custom-scheduler
+  namespace: kube-system
+spec:
+  containers:
+  - command
+    - kube-scheduler
+    - --address=127.0.0.1
+    - --kubeconfig=/etc/kubernates/scheduler.conf
+    - --leader-elect=true
+    - --scheduler-name=my-custom-scheduler
+  image: k8s.gcr.io/kube-scheduler-amd64:v1.11.3
+  name: kube-scheduler
+```
+
