@@ -15,11 +15,11 @@
 - `kubelet` and `kube-procy` can be 2 version lower or same as `kube-apiserver`
 - `kubectl` can be +1 or -1 version as kube-apiserver
 - `kubeadm` doesnot install or upgrade `kubelet`
-Master node Upgrade
+#### Master node Upgrade
 -  `apt upgrade -y kubeadm=1.12.0-00`
 -  `kubeadm upgrade apply v1.12.0`
 - `apt upgrade kubelet=1.12.0-00` 
-Upgrade worker nodes
+#### Upgrade worker nodes
 - `kubectl drain node01`
 - `apt upgrade -y kubeadm=1.12.0-00`
 - `apt upgrade kubelet=1.12.0-00` and `systemctl restart kubelet`
