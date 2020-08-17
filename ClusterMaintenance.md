@@ -26,3 +26,12 @@
 - `kubeadm upgrade node config --kubelet-version v1.12.0`
 -  `systemctl restart kubelet`
 - `kubectl uncordon node01`
+
+
+### Backup and Restore
+- ETCD Backup
+    - `ETCDCTL_API=3 etcdctl snapshot save snapshot.db`
+    - `ETCDCTL_API=3 etcdctl snapshot status snapshot.db`
+- ETCD restore
+  - servie kube-apiserver stop
+  - `ETCDCTL_API=3 etcdctl snapshot restore snapshot.db`
