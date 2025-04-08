@@ -30,11 +30,15 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
+      - name: Fetch all tags
+        run: |
+          # Fetch all tags to ensure we're comparing against the latest tag
+          git fetch --tags
+
       - name: Determine Next Version
         id: version
         run: |
-          # Fetch all tags to determine the latest version
-          git fetch --tags
+          # Fetch the latest tag explicitly
           latest_tag=$(git describe --tags `git rev-list --tags --max-count=1` 2>/dev/null || echo "v0.0.0")
           echo "Latest tag: $latest_tag"
 
@@ -91,8 +95,6 @@ jobs:
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.tag }}
           release_name: "Release ${{ env.tag }}"
