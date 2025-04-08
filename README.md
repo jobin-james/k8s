@@ -1,6 +1,6 @@
 ## Kubernetes Certified Administrator Exam preparation.
 -------------------------------***********************--------------------------------
-### Core Concetps..
+### Core Concetps.
 *******************
 ## 1. Cluster Architecture
 kubernates cluster consist of nodes, that host applications in the form of containers. --> worker nodes
