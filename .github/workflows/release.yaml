@@ -73,7 +73,7 @@ jobs:
 
           echo "New tag: $new_tag"
           echo "tag=$new_tag" >> $GITHUB_ENV
-          
+
       - name: Create Tag
         run: |
           git tag ${{ env.tag }}
@@ -85,5 +85,5 @@ jobs:
         run: |
           gh release create ${{ env.tag }} \
               --repo="$GITHUB_REPOSITORY" \
-              --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
+              --title="Release ${{ env.tag }}" \
               --generate-notes
