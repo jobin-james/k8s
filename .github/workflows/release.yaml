@@ -3,13 +3,18 @@ name: Create Tag and Release
 on:
   push:
     branches:
-      - master  # Automatically run on push to main
+      - main  # Automatically run on push to main
   workflow_dispatch:  # Optional manual trigger
     inputs:
-      bump-type:
-        description: "Version bump type (major, minor, patch)"
-        required: false
+      bump-type:  # Specify the type of version bump
+        description: "Select version bump type"
+        required: true
         default: "patch"
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
 
 jobs:
   create-release:
@@ -34,7 +39,7 @@ jobs:
           echo "Latest tag: $latest_tag"
 
           # Extract the major, minor, and patch components
-          if [[ $latest_tag =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+          if [[ $latest_tag =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
             major=${BASH_REMATCH[1]}
             minor=${BASH_REMATCH[2]}
             patch=${BASH_REMATCH[3]}
@@ -44,17 +49,17 @@ jobs:
             patch=0
           fi
 
-          # Determine bump type
+          # Determine bump type based on manual input
           bump_type="${{ github.event.inputs.bump-type || 'patch' }}"
           case "$bump_type" in
             major)
-              new_tag="$((major + 1)).0.0"
+              new_tag="v$((major + 1)).0.0"
               ;;
             minor)
-              new_tag="$major.$((minor + 1)).0"
+              new_tag="v$major.$((minor + 1)).0"
               ;;
             patch)
-              new_tag="$major.$minor.$((patch + 1))"
+              new_tag="v$major.$minor.$((patch + 1))"
               ;;
             *)
               echo "Invalid bump type: $bump_type"
@@ -84,3 +89,4 @@ jobs:
           body: ${{ env.changelog }}
           draft: false
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
