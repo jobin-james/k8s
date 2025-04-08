@@ -94,12 +94,10 @@ jobs:
           git push origin ${{ env.tag }}
 
       - name: Create GitHub Release
-        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.tag }}
-          release_name: "Release ${{ env.tag }}"
-          body: ${{ env.changelog }}  # Pass the changelog here (already formatted)
-          draft: false
-          prerelease: false
+        run: |
+          gh release create ${{ env.tag }} \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
+              --generate-notes
