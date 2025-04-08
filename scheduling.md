@@ -1,7 +1,7 @@
 # Scheduling
 
 ### Manual scheduling
-- what to schedule
+- what to schedule 
 - which node to schedule
 - bind pod to node(Sheduling) `nodeName: node 01` Property on definition file
 - Bind an already created pod to node
@@ -91,7 +91,7 @@ spec:
   - CPU --> 0.5
   - MEM --> 256 Mi
   - 1 count of cpu means 1 core
-  - 0.1 count means 100m
+  - 0.1 count means 100m 
   - A countainer cannot use more CPU than its limit --> THROTTLE
   - A container uses more mo=emory than its limit, kubernates terminate the container
   [Reference - Memory Limit](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/)
