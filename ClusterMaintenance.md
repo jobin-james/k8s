@@ -1,4 +1,4 @@
-### OS Upgrades
+### OS Upgrades 
 - pod eviction time out --> time for pod to back online `kube-controller-manger --pod-eviction-timeout=5m0s`
 - Drain Nodes `kubcetl drain node01`
 - Make node available --> `kubectl uncordon node01`
