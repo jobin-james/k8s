@@ -3,7 +3,7 @@ name: Create Tag and Release
 on:
   push:
     branches:
-      - main  # Automatically run on push to main
+      - master  # Automatically run on push to main
   workflow_dispatch:  # Optional manual trigger
     inputs:
       bump-type:  # Specify the type of version bump
@@ -73,8 +73,16 @@ jobs:
       - name: Generate Changelog
         id: changelog
         run: |
-          git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:"- %s" > changelog.txt
-          echo "changelog=$(cat changelog.txt)" >> $GITHUB_ENV
+          # Generate a changelog from the commit messages since the last tag
+          changelog=$(git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:"- %s")
+          
+          # If there are no changes, add a default message
+          if [ -z "$changelog" ]; then
+            changelog="No changes since last release."
+          fi
+
+          # Save the changelog
+          echo "changelog=$changelog" >> $GITHUB_ENV
 
       - name: Create Tag
         run: |
@@ -82,13 +90,12 @@ jobs:
           git push origin ${{ env.tag }}
 
       - name: Create GitHub Release
-        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.tag }}
           release_name: "Release ${{ env.tag }}"
-          body: ${{ env.changelog }}
+          body: ${{ env.changelog }}  # Pass the changelog here (already formatted)
           draft: false
           prerelease: false
