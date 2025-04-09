@@ -1,63 +1,73 @@
-name: Folder-Specific Tagging and Releases
+name: Folder-Specific Tag and Release
 
 on:
   push:
     branches:
-      - master  # Trigger on pushes to the main branch
-  workflow_dispatch:  # Manual trigger for testing or special cases
+      - master
+    paths:
+      - 'folder1/**'
+      - 'folder2/**'
+  workflow_dispatch:
+    inputs:
+      folder:
+        description: "Select the folder"
+        required: true
+        type: choice
+        options:
+          - folder1
+          - folder2
+      bump-type:
+        description: "Select version bump type"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
 
 jobs:
-  detect-changes:
+  tag-and-release:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Ensure we fetch the full commit history for tags
+
+      - name: Set Up Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
 
       - name: Determine Changed Folder
         id: folder
         run: |
-          # Check for changes in folder1 and folder2
-          folder1_changed=$(git diff --name-only HEAD~1 HEAD | grep -q '^folder1/' && echo "true" || echo "false")
-          folder2_changed=$(git diff --name-only HEAD~1 HEAD | grep -q '^folder2/' && echo "true" || echo "false")
-
-          echo "folder1_changed=$folder1_changed" >> $GITHUB_ENV
-          echo "folder2_changed=$folder2_changed" >> $GITHUB_ENV
-
-          # Output to console for debugging
-          echo "Folder1 Changed: $folder1_changed"
-          echo "Folder2 Changed: $folder2_changed"
-
-      - name: Print Result
-        run: |
-          if [[ "${{ env.folder1_changed }}" == "true" ]]; then
-            echo "Changes detected in folder1"
-          elif [[ "${{ env.folder2_changed }}" == "true" ]]; then
-            echo "Changes detected in folder2"
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "folder=${{ github.event.inputs.folder }}" >> $GITHUB_ENV
           else
-            echo "No relevant changes detected"
-            exit 0
+            # Check for changes in folder1 or folder2
+            if git diff --name-only HEAD~1 | grep -q '^folder1/'; then
+              echo "folder=folder1" >> $GITHUB_ENV
+            elif git diff --name-only HEAD~1 | grep -q '^folder2/'; then
+              echo "folder=folder2" >> $GITHUB_ENV
+            else
+              echo "No relevant changes found."
+              exit 0
+            fi
           fi
 
-      - name: Determine Next Version and Create Tag
-        if: env.folder1_changed == 'true' || env.folder2_changed == 'true'
+      - name: Fetch all tags
+        run: git fetch --tags
+
+      - name: Determine Next Version
         id: version
         run: |
-          # Determine which folder changed and set the prefix
-          if [[ "${{ env.folder1_changed }}" == "true" ]]; then
-            folder="folder1"
-          elif [[ "${{ env.folder2_changed }}" == "true" ]]; then
-            folder="folder2"
-          fi
-
-          # Get the latest tag for the folder
-          latest_tag=$(git tag --list "${folder}/v*" | sort -V | tail -n 1 || echo "${folder}/v0.0.0")
+          # Fetch the latest tag for the specific folder
+          latest_tag=$(git tag --list "${{ env.folder }}/v*" | sort -V | tail -n 1)
           echo "Latest tag: $latest_tag"
 
-          # Extract major, minor, patch from the latest tag
-          if [[ $latest_tag =~ ^${folder}/v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+          # Extract the major, minor, and patch components
+          if [[ $latest_tag =~ ^${{ env.folder }}/v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
             major=${BASH_REMATCH[1]}
             minor=${BASH_REMATCH[2]}
             patch=${BASH_REMATCH[3]}
@@ -67,19 +77,33 @@ jobs:
             patch=0
           fi
 
-          # Increment the patch version
-          new_tag="${folder}/v$major.$minor.$((patch + 1))"
+          # Determine the new version based on bump type
+          bump_type="${{ github.event.inputs.bump-type || 'patch' }}"
+          case "$bump_type" in
+            major)
+              new_tag="${{ env.folder }}/v$((major + 1)).0.0"
+              ;;
+            minor)
+              new_tag="${{ env.folder }}/v$major.$((minor + 1)).0"
+              ;;
+            patch)
+              new_tag="${{ env.folder }}/v$major.$minor.$((patch + 1))"
+              ;;
+            *)
+              echo "Invalid bump type: $bump_type"
+              exit 1
+              ;;
+          esac
+
           echo "New tag: $new_tag"
           echo "tag=$new_tag" >> $GITHUB_ENV
 
       - name: Create Tag
-        if: env.folder1_changed == 'true' || env.folder2_changed == 'true'
         run: |
           git tag ${{ env.tag }}
           git push origin ${{ env.tag }}
 
       - name: Create GitHub Release
-        if: env.folder1_changed == 'true' || env.folder2_changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
