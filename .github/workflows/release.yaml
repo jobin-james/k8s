@@ -51,6 +51,8 @@ jobs:
             echo "changes_detected=true" >> $GITHUB_ENV
           else
             echo "changes_detected=false" >> $GITHUB_ENV
+          fi
+
 
       - name: Skip if No Changes
         if: env.changes_detected == 'false'
