@@ -39,7 +39,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-      - name: Determine Changed Folder
+      - name: Find Changed Folder
         id: folder
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
