@@ -3,7 +3,7 @@ name: Folder-Specific Tagging and Releases
 on:
   push:
     branches:
-      - main  # Trigger on pushes to the main branch
+      - master  # Trigger on pushes to the main branch
   workflow_dispatch:  # Manual trigger for testing or special cases
 
 jobs:
