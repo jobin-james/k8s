@@ -33,13 +33,15 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Ensure full commit history is fetched
 
       - name: Set Up Git
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-      - name: Find Changed Folder
+      - name: Determine Changed Folder
         id: folder
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
@@ -100,14 +102,14 @@ jobs:
 
       - name: Create Tag
         run: |
-          git tag ${{ env.tag }}
-          git push origin ${{ env.tag }}
+          git tag "${{ env.tag }}"
+          git push origin "${{ env.tag }}"
 
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create ${{ env.tag }} \
+          gh release create "${{ env.tag }}" \
               --repo="$GITHUB_REPOSITORY" \
               --title="Release ${{ env.tag }}" \
               --generate-notes
