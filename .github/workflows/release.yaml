@@ -1,4 +1,4 @@
-name: Folder-Specific Tag and Release
+name: Tag and Release
 
 on:
   push:
